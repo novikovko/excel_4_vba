@@ -1,0 +1,50 @@
+Sub форматирование“аблицы¬ручную()
+
+Dim wb As Workbook
+Dim sht As Worksheet
+
+Dim rng As Range
+
+Dim r As Long
+Dim c As Integer
+
+Set wb = ThisWorkbook
+
+Set sht = wb.ActiveSheet
+Set rng = sht.Cells.Find("‘амили€")
+
+' вычисление кол-ва строк и столбцов в таблице
+Set rng = rng.CurrentRegion
+
+r = rng.Rows.Count
+c = rng.Columns.Count
+' мы переменную делаем размером с одну первую €чейку таблицы и смещаем вправо
+' на количество столбцов
+Set rng = rng.Resize(1, 1).Offset(, c)
+rng.Value = "‘ќ“"
+' вычисление строчных сумм
+Set rng = rng.Offset(1).Resize(r - 1)
+rng.Formula = "=RC[-1]+RC[-2]"
+rng.NumberFormat = "0,0.0\ RUR"
+
+' заголовки -------------------
+Set rng = rng.CurrentRegion.Rows(1)
+
+With rng
+
+    .Font.Bold = True
+    .Interior.ColorIndex = 6
+    .HorizontalAlignment = xlCenter
+
+End With
+
+' границы и подравнивание всей таблицы -------------------
+Set rng = rng.CurrentRegion
+
+With rng
+
+    .Borders.ColorIndex = 5
+    .Columns.AutoFit
+
+End With
+End Sub
